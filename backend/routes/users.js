@@ -16,47 +16,47 @@ fs.createReadStream('./mockdata/users.csv')
   });
 
 function formatUser(user) {
-  const { id, first_name, last_name, email } = user;
+  const { id, first_name, email } = user;
   return {
     id, 
-    name: `${first_name} ${last_name}`,
+    name: `${first_name}`,
     email,
-  };
+  }; 
 }
 
 // GET /api/users (get all users)
 router.get('/', (req, res) => {
-  try {
-    // format users without password
-    const formattedUser = mockUsers.map(formatUser);
 
-    // respond with formatted users
-    res.json({ users: formattedUser });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
-  }
-});
+  // connect to collection "users"
+  req.app.locals.db.collection('users').find().toArray()
+  .then(results => {
+    console.log(results);
 
-// GET /api/users/userID (get specific user)
-router.get('/:userID', (req, res) => {
-  try {
-    const userId = req.params.userID;
-    const user = mockUsers.find((u) => u.id === userId);
+    let printUsers = "<div><h2>User list</h2>"
 
-    if (!user) {
-      res.status(404).json({ message: 'User not found' });
-    } else {
-      // format user
-      const formattedUser = formatUser(user);
-
-      res.json({ user: formattedUser });
+    for (user in results) {
+      printUsers += "<div>" + results[user].name + "</div>"
     }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
-  }
+
+    printUsers += "</div>"
+
+    res.send(printUsers);
+  })
 });
 
+// POST /api/users/userID (get specific user)
+
+
+// POST /api/users/add (create new user)
+router.post('/add', (req, res) => {
+
+  // connect to collection
+  req.app.locals.db.collection('users').insertOne(req.body)
+  .then(result => {
+    console.log(result);
+    res.redirect('/show');
+  })
+
+})
 
 module.exports = router;

@@ -3,8 +3,19 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
-const { MongoClient } = require('mongodb');
-const mongoClient = require('mongodb').MongoClient;
+const MongoClient = require('mongodb').MongoClient;
+
+MongoClient.connect('mongodb://127.0.0.1:27017', {
+    useUnifiedTopology: true
+})
+.then(client => {
+    console.log("Data base running");
+
+    const db = client.db('webshop');
+    app.locals.db = db;
+})
+
+let { randomUUID } = require('crypto');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -19,17 +30,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-mongoClient.connect('mongodb://127.0.0.1:27017')
-.then(client => {
-    console.log("MongoDB");
-
-    const db = client.db("fanny-holmstrom");
-    app.locals.db = db;
-})
 
 app.use('/', indexRouter);
 
 app.use('/api/users', usersRouter);
+
+
 
 
 
