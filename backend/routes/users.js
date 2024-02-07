@@ -20,7 +20,7 @@ fs.createReadStream('./mockdata/users.csv')
 */
 
 users = [
-  {id: "1", email: "test@mail.com", password: "test"}
+  {id: "1", name: "Test", email: "test@mail.com", password: "test"}
 ]
 
 // GET /api/users (get all users)
