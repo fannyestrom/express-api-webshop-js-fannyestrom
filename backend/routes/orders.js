@@ -17,7 +17,19 @@ router.post('/add', (req, res, next) => {
         console.error("Error creating order:", error)
         res.status(500).send("Error creating order");
     });
-    
+});
+
+// GET /api/orders/all (get all orders)
+router.get('/all', (req, res, next) => {
+
+    req.app.locals.db.collection('orders').find({}).toArray()
+    .then(orders => {
+        res.status(200).json(orders);
+    })
+    .catch(error => {
+        console.error("Error fetching orders:", error);
+        res.status(500).send("Error fetching orders");
+    });
 });
 
 module.exports = router;
