@@ -19,8 +19,9 @@ fs.createReadStream('./mockdata/users.csv')
   });
 */
 
-users = []
-
+users = [
+  {id: "1", email: "test@mail.com", password: "test"}
+]
 
 // GET /api/users (get all users)
 router.get('/', (req, res, next) => {
@@ -46,21 +47,20 @@ router.get('/', (req, res, next) => {
   })
 });
 
-
 // POST /api/users (get specific user)
 router.post('/', async (req, res) => {
   const userId = req.body.id;
 
   try {
-    // Retrieve the specific user from MongoDB
+    // retrieve the specific user from MongoDB
     const user = await req.app.locals.db.collection('users').findOne({ _id: new ObjectId(userId) });
     
-    // Check if the user exists
+    // check if the user exists
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
     
-    // Send the user object as JSON
+    // send the user object as JSON
     res.json(user);
   } catch (error) {
     console.error('Error fetching user from the database:', error);
@@ -68,12 +68,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-
-
-
-
-
-// POST /api/users/add (create new user)
+// POST /users/add (create new user)
 router.post('/add', (req, res) => {
 
   // connect to collection
@@ -85,6 +80,22 @@ router.post('/add', (req, res) => {
   })
 
 });
+
+// POST /users/login (login user)
+router.post('/login', (req, res) => {
+
+  let checkEmail = req.body.email;
+  let checkPassword = req.body.password;
+
+  let user = users.find(user => user.email == checkEmail && user.password == checkPassword);
+
+  if (user) {
+    res.json({user: user.id});
+  } else {
+    res.status(401).json({message: "Incorrect login"})
+  }
+
+})
 
 
 module.exports = router;
