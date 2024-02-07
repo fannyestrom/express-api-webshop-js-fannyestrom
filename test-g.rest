@@ -62,10 +62,10 @@ POST http://localhost:3000/api/products/add
 Content-Type: application/json
 
 {
-  "name": "Chocolate Chip Cookie",
-  "description": "Beskrivning av produkt 1",
-  "price": 30,
-  "lager": 15
+  "name": "Cinnamon Roll",
+  "description": "Beskrivning av produkt 4",
+  "price": 35,
+  "lager": 10
 }
 
 ###
@@ -82,11 +82,11 @@ Content-Type: application/json
   "user": "{{getUsers.response.body.$[0].id}}",
       "products": [
     {
-      "productId": "// ID PÅ EN PRODUKT",
+      "productId": "65c3a87df078bdf29b246cb9",
       "quantity": 1
     },
     {
-      "productId": "// ID PÅ EN PRODUKT",
+      "productId": "65c40c59c53c0db63fa78c6a",
       "quantity": 2
     }
   ]
