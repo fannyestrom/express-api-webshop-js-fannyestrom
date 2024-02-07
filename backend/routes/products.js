@@ -1,52 +1,91 @@
 const express = require('express');
 const router = express.Router();
+const { ObjectID } = require('mongodb');
 
 
-// product array
+// test product array
 let products = [
     {
-        id: 1,
         name: 'Chocolate Chip Cookie',
+        description: 'Beskrivning av produkt 1',
         price: 30,
-        category: 'May contain traces of nuts'
+        lager: 15
     },
     {
-        id: 2,
         name: 'Caramel Cheesecake',
+        description: 'Beskrivning av produkt 2',
         price: 40,
-        category: 'Vegan'
+        lager: 10
     },
     {
-        id: 3,
         name: 'Chocolate Glazed Brownie',
+        description: 'Beskrivning av produkt 3',
         price: 40,
-        category: 'May contain traces of nuts'
+        lager: 10
     },
     {
-        id: 4,
         name: 'Cinnamon Roll',
+        description: 'Beskrivning av produkt 4',
         price: 35,
-        category: 'Gluten-free'
+        lager: 12
     }
 ]
 
 // GET /api/products (get all products)
 router.get('/', (req, res, next) => {
-
-    res.json(products);
+    req.app.locals.db.collection('products').find().toArray()
+        .then(products => {
+            res.json(products);
+        })
+        .catch(error => {
+            console.error("Error fetching products:", error);
+            res.status(500).json({ message: "Internal server error" });
+        });
 });
+
 
 // GET /api/products/:id (get specific product by ID)
 router.get('/:id', (req, res) => {
-    const productId = parseInt(req.params.id);
 
-    const product = products.find(product => product.id === productId)
+    const productId = req.params.id;
 
-    if (!product) {
-        return res.status(404).json({message: "Product not found"});
+    console.log("Received product ID:", productId); 
+
+    if (!ObjectID.isValid(productId)) {
+        console.log("Invalid product ID:", productId); 
+        return res.status(400).json({ message: "Invalid product ID" });
     }
 
-    res.json(product);
-})
+    req.app.locals.db.collection('products').findOne({ _id: ObjectID(productId) }, (err, product) => {
+        if (err) {
+            console.error("Error fetching product:", err);
+            return res.status(500).json({ message: "Internal server error" });
+        }
+
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+
+        res.json(product);
+    });
+});
+
+
+// POST /api/products/add (add product)
+router.post('/add', (req, res) => {
+    const newProduct = req.body;
+    console.log("new product", newProduct);
+
+    req.app.locals.db.collection('products').insertOne(newProduct)
+        .then(result => {
+            console.log("New product added successfully:", result.insertedId);
+            res.status(201).json({ message: "Product added successfully", productId: result.insertedId });
+        })
+        .catch(error => {
+            console.error("Error adding product:", error);
+            res.status(500).json({ message: "Internal server error" });
+        });
+});
+
 
 module.exports = router;

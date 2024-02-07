@@ -19,6 +19,7 @@ fs.createReadStream('./mockdata/users.csv')
   });
 */
 
+// test user array
 users = [
   {id: "1", name: "Test", email: "test@mail.com", password: "test"}
 ]

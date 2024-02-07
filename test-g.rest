@@ -53,7 +53,7 @@ GET http://localhost:3000/api/products
 ###
 
 // HÄMTA SPECIFIK PRODUKT
-GET http://localhost:3000/api/products/1
+GET http://localhost:3000/api/products/
 
 ###
 
@@ -62,10 +62,10 @@ POST http://localhost:3000/api/products/add
 Content-Type: application/json
 
 {
-  "name": "Produkt 1",
+  "name": "Chocolate Chip Cookie",
   "description": "Beskrivning av produkt 1",
-  "price": 100, 
-  "lager": 10
+  "price": 30,
+  "lager": 15
 }
 
 ###
