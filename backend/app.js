@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 const MongoClient = require('mongodb').MongoClient;
+crypto = require('crypto');
 
 MongoClient.connect('mongodb://127.0.0.1:27017', {
     useUnifiedTopology: true
@@ -11,7 +12,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017', {
 .then(client => {
     console.log("Data base running");
 
-    const db = client.db('webshop');
+    const db = client.db('fanny-holmstrom');
     app.locals.db = db;
 })
 
@@ -32,7 +33,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use('/', indexRouter);
-
 app.use('/api/users', usersRouter);
 
 
