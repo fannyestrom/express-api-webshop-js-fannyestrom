@@ -52,21 +52,22 @@ router.post('/', async (req, res) => {
   const userId = req.body.id;
 
   try {
-    // Hämta den specifika användaren från MongoDB
+    // Retrieve the specific user from MongoDB
     const user = await req.app.locals.db.collection('users').findOne({ _id: new ObjectId(userId) });
     
-    // Kontrollera om användaren finns
+    // Check if the user exists
     if (!user) {
-      return res.status(404).json({ error: 'Användaren hittades inte' });
+      return res.status(404).json({ error: 'User not found' });
     }
     
-    // Skicka användarobjektet som JSON
+    // Send the user object as JSON
     res.json(user);
   } catch (error) {
-    console.error('Fel vid hämtning av användare från databasen:', error);
-    res.status(500).json({ error: 'Ett fel uppstod vid hämtning av användare' });
+    console.error('Error fetching user from the database:', error);
+    res.status(500).json({ error: 'An error occurred while fetching user' });
   }
 });
+
 
 
 
