@@ -47,7 +47,7 @@ router.get('/', (req, res, next) => {
   })
 });
 
-// POST /api/users (get specific user)
+// POST /api/users/:id (get specific user)
 router.post('/', async (req, res) => {
   const userId = req.body.id;
 
