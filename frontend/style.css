@@ -1,0 +1,108 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+    text-transform: uppercase;
+    font-size: 1.8rem;
+    margin: 20px 0 20px 10px;
+}
+
+h2 {
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    margin: 40px 0 60px 10px;
+}
+
+h3 {
+    font-size: 1rem;
+}
+
+
+ul {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+}
+
+.home-nav {
+    position: relative;
+    left: 0;
+}
+
+.login-nav {
+    position: absolute;
+    right: 0;
+}
+
+.login-container {
+    position: relative;
+    top: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.products-nav {
+    position: absolute;
+    left: calc(50% + 225px);
+    font-size: 0.8rem;
+}
+
+@media (max-width: 768px) {
+    .products-nav {
+        position: relative;
+        left: 50px;
+        font-size: 1rem; 
+    }
+}
+
+a {
+    text-decoration: none;
+    text-transform: uppercase;
+    color: black;
+}
+
+#userForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+input, button {
+    border: none;
+}
+
+input {
+    max-width: 200px;
+    margin-top: 10px;
+    padding: 8px 14px;
+    background-color: rgb(234, 234, 234);
+}
+
+button {
+    max-width: 100px;
+    margin-top: 20px;
+    padding: 8px 14px;
+    background-color: black;
+    color: white;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+}
+
+#productContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.product {
+    width: calc(33.33% - 10px);
+    margin-bottom: 20px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+

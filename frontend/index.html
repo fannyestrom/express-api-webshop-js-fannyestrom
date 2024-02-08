@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Webshop</title>
 
+    <link rel="stylesheet" href="style.css" type="text/css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
     
 </head>
@@ -12,15 +13,15 @@
     <header>
         <nav>
             <ul>
-                <li><a href="#" onclick="navigateTo('home')"><span class="material-symbols-outlined">home</span></a></li>
-                <li><a href="#" onclick="navigateTo('login')"><span class="material-symbols-outlined">person</span></a></li>
-                <li><a href="#" onclick="navigateTo('products')">Shop</a></li>
+                <li class="home-nav"><a href="#" onclick="navigateTo('home')"><span class="material-symbols-outlined">home</span></a></li>
+                <li class="products-nav"><a href="#" onclick="navigateTo('products')">Shop</a></li>
+                <li class="login-nav"><a href="#" onclick="navigateTo('login')"><span class="material-symbols-outlined">person</span></a></li>
             </ul>
         </nav>
     </header>
 
-    <main id="mainContent">
-        <div id="userForm"></div>
+    <main class="main-content" id="mainContent">
+        <div class="user-form" id="userForm"></div>
         <div id="productContainer"></div>
         <div id="orderContainer"></div>
         <button onclick="navigateTo('order')">Order</button>

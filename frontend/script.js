@@ -22,7 +22,7 @@ if (localStorage.getItem('user')) {
 // login page 
 function loginPage() {
     const mainContent = document.getElementById('mainContent');
-    mainContent.innerHTML = '<h2>Account</h2><div id="userForm"></div>';
+    mainContent.innerHTML = '<div class="login-container"><h2>Account</h2><div id="userForm"></div></div>';
 
     let userForm = document.getElementById('userForm');
 
@@ -96,18 +96,19 @@ function printProducts() {
 
         const productContainer = document.getElementById('productContainer');
         
-
         products.forEach(product => {
             const productDiv = document.createElement('div');
             productDiv.classList.add('product');
 
+            const imagePath = 'images/mockup.jpg';
+
             productDiv.innerHTML = `
+            <img src="${imagePath}" alt="${product.name}" width="100" height="100" loading="lazy">
             <h3>${product.name}</h3>
             <p>${product.price} SEK</p>
             <!-- You can add more product information here -->
         `;
 
-            // Append the div to the product container
             productContainer.appendChild(productDiv);
         })
         console.log(products);
@@ -149,12 +150,11 @@ function displayOrder() {
     const mainContent = document.getElementById('mainContent');
     mainContent.innerHTML = ''; 
 
-    // You can add HTML content specific to the order page here
     const orderPageContent = document.createElement('div');
-    orderPageContent.innerHTML = '<h1>Order Page</h1>';
+    orderPageContent.innerHTML = '<h1>My order</h1>';
     mainContent.appendChild(orderPageContent);
 }
-
+ 
 
 // navigation to different pages
 function navigateTo(page) {

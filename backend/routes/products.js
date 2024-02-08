@@ -3,34 +3,6 @@ const router = express.Router();
 const { ObjectID } = require('mongodb');
 
 
-// test product array
-let products = [
-    {
-        name: 'Chocolate Chip Cookie',
-        description: 'Beskrivning av produkt 1',
-        price: 30,
-        lager: 15
-    },
-    {
-        name: 'Caramel Cheesecake',
-        description: 'Beskrivning av produkt 2',
-        price: 40,
-        lager: 10
-    },
-    {
-        name: 'Chocolate Glazed Brownie',
-        description: 'Beskrivning av produkt 3',
-        price: 40,
-        lager: 10
-    },
-    {
-        name: 'Cinnamon Roll',
-        description: 'Beskrivning av produkt 4',
-        price: 35,
-        lager: 12
-    }
-]
-
 // GET /api/products (get all products)
 router.get('/', (req, res, next) => {
     req.app.locals.db.collection('products').find().toArray()
