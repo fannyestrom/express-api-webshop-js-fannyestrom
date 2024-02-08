@@ -103,19 +103,73 @@ function printProducts() {
             const imagePath = 'images/mockup.jpg';
 
             productDiv.innerHTML = `
-            <img src="${imagePath}" alt="${product.name}" width="100" height="100" loading="lazy">
-            <h3>${product.name}</h3>
-            <p>${product.price} SEK</p>
-            <!-- You can add more product information here -->
-        `;
+                <img src="${imagePath}" alt="${product.name}" width="200" height="220" loading="lazy">
+                <h3>${product.name}</h3>
+                <p>${product.price} SEK</p>
+                <div class="button-container">
+                    <button class="decrease">-</button>
+                    <button class="increase">+</button>
+                </div>
+            `;
 
+            // increase & decrease buttons event listeners
+            const increase = productDiv.querySelector('.increase');
+            increase.addEventListener('click', () => addToCart(product));
+
+            const decrease = productDiv.querySelector('.decrease');
+            decrease.addEventListener('click', ( )=> removeFromCart(product));
+        
             productContainer.appendChild(productDiv);
-        })
+        });
         console.log(products);
     })
     .catch(error => {
         console.error('Error fetching products', error);
     });
+}
+
+// add product to cart
+function addToCart(product) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push(product);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    console.log('Product added to cart:', product);
+}
+
+// remove product from cart
+function removeFromCart(product) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const index = cart.findIndex(item => item.id === product.id);
+    if (index !== -1) {
+        cart.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        console.log('Product removed from cart:', product);
+    }
+}
+
+// display shopping cart
+function displayCart() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    console.log("Cart Data:", cart);
+    const cartContainer = document.getElementById('cartContainer');
+    console.log("Cart container:", cartContainer);
+
+    cartContainer.innerHTML = '';
+
+    if (cart.length === 0) {
+        cartContainer.innerHTML = '<p>Your cart is empty.</p>';
+    } else {
+        const cartList = document.createElement('ul');
+
+        cart.forEach(product => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `${product.name} - ${product.price} SEK`;
+            cartList.appendChild(listItem);
+        });
+
+        cartContainer.appendChild(cartList);
+    }
+
 }
 
 // place order
@@ -170,6 +224,9 @@ function navigateTo(page) {
             break;
         case 'order':
             displayOrder();
+            break;
+        case 'cart':
+            displayCart();
             break;
         default:
             navigateTo('home');
