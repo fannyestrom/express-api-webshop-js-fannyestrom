@@ -2,28 +2,6 @@ const express = require('express');
 const router = express.Router();
 const { ObjectId } = require('mongodb');
 
-/*
-const fs = require('fs');
-const csv = require('csv-parser');
-
-const mockUsers = [];
-
-// read users.csv data
-fs.createReadStream('./mockdata/users.csv')
-  .pipe(csv())
-  .on('data', (row) => {
-    mockUsers.push(row);
-  })
-  .on('end', () => {
-    console.log('CSV file successfully processed.');
-  });
-*/
-
-// test user array
-users = [
-  {id: "1", name: "Test", email: "test@mail.com", password: "test"}
-]
-
 // GET /api/users (get all users)
 router.get('/', (req, res, next) => {
 

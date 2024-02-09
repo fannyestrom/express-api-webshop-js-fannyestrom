@@ -62,8 +62,8 @@ POST http://localhost:3000/api/products/add
 Content-Type: application/json
 
 {
-  "name": "Product 8",
-  "description": "Description of product 8",
+  "name": "Product 7",
+  "description": "Description of product 7",
   "price": 500,
   "lager": 12
 }
@@ -79,14 +79,14 @@ POST http://localhost:3000/api/orders/add
 Content-Type: application/json
 
 {
-  "user": "{{getUsers.response.body.$[0].id}}",
+  "user": "65c3884b25fbb6b48a6eccef",
       "products": [
     {
-      "productId": "65c3a87df078bdf29b246cb9",
+      "productId": "65c4dfa33c74879684a63dd6",
       "quantity": 1
     },
     {
-      "productId": "65c40c59c53c0db63fa78c6a",
+      "productId": "65c4dfc93c74879684a63dd7",
       "quantity": 2
     }
   ]

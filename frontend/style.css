@@ -10,12 +10,12 @@ h1 {
 
 h2 {
     text-transform: uppercase;
-    font-size: 1.5rem;
+    font-size: 1.9rem;
     margin: 40px 0 60px 10px;
 }
 
 h3 {
-    font-size: 1rem;
+    font-size: 1.2rem;
 }
 
 
@@ -28,14 +28,14 @@ ul {
 
 .home-nav {
     position: relative;
-    left: 0;
+    left: 5;
 }
 
 
 .products-nav {
     position: absolute;
     left: calc(50% + 225px);
-    font-size: 0.8rem;
+    font-size: 1rem;
 }
 
 @media (max-width: 768px) {
@@ -48,7 +48,7 @@ ul {
 
 .login-nav {
     position: absolute;
-    right: 40px;
+    right: 60px;
 }
 
 .login-container {
@@ -62,13 +62,21 @@ ul {
 
 .cart-nav {
     position: absolute;
-    right: 10px;
+    right: 15px;
 }
 
 a {
     text-decoration: none;
     text-transform: uppercase;
     color: black;
+}
+
+a:hover {
+    color: #636363; 
+}
+
+.material-symbols-outlined {
+    font-size: 35px !important;
 }
 
 #userForm {
@@ -82,20 +90,30 @@ input, button {
 }
 
 input {
-    max-width: 200px;
-    margin-top: 10px;
-    padding: 8px 14px;
+    width: 300px;
+    margin-top: 17px;
+    padding: 12px 14px;
     background-color: rgb(234, 234, 234);
 }
 
 button {
-    max-width: 100px;
-    margin-top: 20px;
-    padding: 8px 14px;
+    width: 100px;
+    margin-top: 25px;
+    padding: 12px 18px;
     background-color: black;
     color: white;
     text-transform: uppercase;
     font-size: 0.7rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #6b6b6b; 
+}
+  
+button:active {
+    transform: scale(0.80); 
 }
 
 #productContainer {
@@ -113,9 +131,10 @@ button {
 }
 
 .increase, .decrease {
-    width: 25px;
-    height: 25px;
+    width: 35px;
+    height: 35px;
     padding: 5px;
-
+    margin: 2px;
+    font-size: 1.1rem;
 }
 

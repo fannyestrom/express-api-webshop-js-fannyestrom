@@ -92,10 +92,9 @@ function printProducts() {
     fetch('http://localhost:3000/api/products')
     .then(response => response.json())
     .then(products => {
-
         const productContainer = document.getElementById('productContainer');
-        
-        products.forEach(product => {
+
+        products.forEach((product, index) => {
             const productDiv = document.createElement('div');
             productDiv.classList.add('product');
 
@@ -106,18 +105,11 @@ function printProducts() {
                 <h3>${product.name}</h3>
                 <p>${product.price} SEK</p>
                 <div class="button-container">
-                    <button class="decrease">-</button>
+                    <button class="decrease" data-index="${index}">-</button>
                     <button class="increase">+</button>
                 </div>
             `;
 
-            // increase & decrease buttons event listeners
-            const increase = productDiv.querySelector('.increase');
-            increase.addEventListener('click', () => addToCart(product));
-
-            const decrease = productDiv.querySelector('.decrease');
-            decrease.addEventListener('click', ( )=> removeFromCart(product));
-        
             productContainer.appendChild(productDiv);
         });
         console.log(products);
@@ -126,48 +118,6 @@ function printProducts() {
         console.error('Error fetching products', error);
     });
 }
-
-// add product to cart
-function addToCart(product) {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    cart.push(product);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    console.log('Product added to cart:', product);
-}
-
-// remove product from cart
-function removeFromCart(product) {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const index = cart.findIndex(item => item.id === product.id);
-    if (index !== -1) {
-        cart.splice(index, 1);
-        localStorage.setItem('cart', JSON.stringify(cart));
-        console.log('Product removed from cart:', product);
-    }
-}
-
-// display shopping cart
-function displayCart() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const mainContent = document.getElementById('mainContent');
-
-    mainContent.innerHTML = '';
-
-    if (cart.length === 0) {
-        mainContent.innerHTML = '<p>Your cart is empty.</p>';
-    } else {
-        const cartList = document.createElement('ul');
-
-        cart.forEach(product => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `${product.name} - ${product.price} SEK`;
-            cartList.appendChild(listItem);
-        });
-
-        mainContent.appendChild(cartList);
-    }
-}
-
 
 // place order
 function placeOrder(orderData) {
@@ -221,9 +171,6 @@ function navigateTo(page) {
             break;
         case 'order':
             displayOrder();
-            break;
-        case 'cart':
-            displayCart();
             break;
         default:
             navigateTo('home');
