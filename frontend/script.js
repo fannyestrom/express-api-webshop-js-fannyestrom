@@ -80,7 +80,6 @@ function printLogoutBtn() {
         userForm.appendChild(logoutBtn);
     }
 }
-
 // products page
 function productsPage() {
     const mainContent = document.getElementById('mainContent');
@@ -150,14 +149,12 @@ function removeFromCart(product) {
 // display shopping cart
 function displayCart() {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    console.log("Cart Data:", cart);
-    const cartContainer = document.getElementById('cartContainer');
-    console.log("Cart container:", cartContainer);
+    const mainContent = document.getElementById('mainContent');
 
-    cartContainer.innerHTML = '';
+    mainContent.innerHTML = '';
 
     if (cart.length === 0) {
-        cartContainer.innerHTML = '<p>Your cart is empty.</p>';
+        mainContent.innerHTML = '<p>Your cart is empty.</p>';
     } else {
         const cartList = document.createElement('ul');
 
@@ -167,10 +164,10 @@ function displayCart() {
             cartList.appendChild(listItem);
         });
 
-        cartContainer.appendChild(cartList);
+        mainContent.appendChild(cartList);
     }
-
 }
+
 
 // place order
 function placeOrder(orderData) {
