@@ -60,29 +60,24 @@ router.post('/add', (req, res) => {
 
 });
 
+// POST /users/login (login user)
 router.post('/login', async (req, res) => {
-  let checkEmail = req.body.email;
-  let checkPassword = req.body.password;
+  const { email, password } = req.body;
 
   try {
-    const user = await req.app.locals.db.collection('users').findOne({ email: checkEmail });
+    const user = await req.app.locals.db.collection('users').findOne({ email });
 
-    console.log('User from database:', user);
-    console.log('Password to check:', checkPassword);
-
-    if (user) {
-      if (user.password === checkPassword) {
-        res.json({ user: user.id });
-      } else {
-        res.status(401).json({ message: "Incorrect password" });
-      }
-    } else {
-      res.status(401).json({ message: "User not found" });
+    if (!user || user.password !== password) {
+      return res.status(401).json({ message: "Incorrect login" });
     }
+
+    const { _id, name, email: userEmail } = user; 
+    res.json({ user: { id: _id, name, email: userEmail } });
   } catch (error) {
-    console.error('Error fetching user from the database:', error);
-    res.status(500).json({ error: 'An error occurred while fetching user' });
+    console.error('Error during login:', error);
+    res.status(500).json({ error: 'An error occurred during login' });
   }
 });
+
 
 module.exports = router;

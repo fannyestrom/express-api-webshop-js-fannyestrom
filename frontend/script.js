@@ -1,34 +1,17 @@
 // start page 
-function startPage(userId) {
+function startPage() {
     const mainContent = document.getElementById('mainContent');
-    mainContent.innerHTML = '<h1>Webshop Home Page</h1>';
+    mainContent.innerHTML = '<h1>Home Page</h1>';
+
+    const userId = localStorage.getItem('user'); 
 
     if (userId) { // check if user is signed in
         const orderBtn = document.createElement('button');
         orderBtn.textContent = 'My order';
-        orderBtn.onclick = () => navigateTo('order', userId); // Pass userId to navigateTo function
+        orderBtn.onclick = () => navigateTo('order', userId); // 
         mainContent.appendChild(orderBtn);
+        printLogoutBtn();
     }
-
-    // check if the current page is the cart page
-    if (window.location.pathname.endsWith('cart.html')) {
-        displayCart();
-    } else {
-        // clear the cart container if not on the cart page
-        const cartContainer = document.getElementById('cartContainer');
-        if (cartContainer) {
-            cartContainer.innerHTML = '';
-        }
-    }
-}
-
-
-if (localStorage.getItem('user')) {
-    // signed in
-    printLogoutBtn();
-} else {
-    // signed out 
-    loginPage();
 }
 
 // login page 
@@ -62,8 +45,7 @@ function loginPage() {
     
             if (data.user) {
                 localStorage.setItem("user", data.user);
-                printLogoutBtn(); // 
-                startPage(data.user);
+                printLogoutBtn(); // Update UI
             } else {
                 alert("Incorrect login");
             }            
@@ -74,26 +56,19 @@ function loginPage() {
     userForm.append(inputEmail, inputPassword, loginBtn);  
 }
 
-
 // print logout button
 function printLogoutBtn() {
     const userForm = document.getElementById('userForm');
 
-    if (localStorage.getItem('user')) {
-        userForm.innerHTML = ""; // Clear existing content
-
-        const logoutBtn = document.createElement('button');
-        logoutBtn.innerText = "Sign out";
-
-        logoutBtn.addEventListener('click', () => {
-            localStorage.removeItem('user');
-            loginPage();
-        });
-
-        userForm.appendChild(logoutBtn);
-    } else {
-        userForm.innerHTML = "";
-    }
+    // Clear existing content and create logout button
+    userForm.innerHTML = "";
+    const logoutBtn = document.createElement('button');
+    logoutBtn.innerText = "Sign out";
+    logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('user');
+        startPage(); // Reload the start page after logout
+    });
+    userForm.appendChild(logoutBtn);
 }
 
 // products page
@@ -155,9 +130,9 @@ function printProducts() {
     });
 }
 
-
+// Update increaseProductQuantity function
 function increaseProductQuantity(index, productId) {
-    console.log("Product ID in increaseProductQuantity:", productId);
+    console.log("Increasing quantity for product ID:", productId); // Add debug log
     const quantityElement = document.querySelectorAll('.quantity')[index];
     let quantity = parseInt(quantityElement.textContent);
     quantity++;
@@ -165,7 +140,9 @@ function increaseProductQuantity(index, productId) {
     updateCart(productId, quantity);
 }
 
+// Update decreaseProductQuantity function
 function decreaseProductQuantity(index, productId) {
+    console.log("Decreasing quantity for product ID:", productId); // Add debug log
     const quantityElement = document.querySelectorAll('.quantity')[index];
     let quantity = parseInt(quantityElement.textContent);
     if (quantity > 0) {
@@ -194,8 +171,9 @@ function loadCartData() {
     }
 }
 
-// display shopping cart
+// Update displayCart function
 async function displayCart() {
+    console.log("Displaying cart..."); // Add debug log
     const cartContainer = document.getElementById('cartContainer');
     let cartHeading = '<h2>Shopping cart</h2>';
 
@@ -207,6 +185,7 @@ async function displayCart() {
         if (quantity > 0) {
             try {
                 const product = await fetchProduct(productId);
+                console.log("Product fetched successfully:", product); // Add debug log
                 cartHTML += `<h5>${product.name}</h5><p>Quantity: ${quantity}</p>`;
                 cartIsEmpty = false;
             } catch (error) {
@@ -217,17 +196,6 @@ async function displayCart() {
 
     if (cartIsEmpty) {
         cartHTML = "<p>Your cart is empty.</p>";
-    } else {
-        // check if a user is signed in
-        const user = localStorage.getItem('user');
-        if (user) {
-            cartHTML += '<button id="placeOrderBtn">Place Order</button>';
-            document.getElementById('placeOrderBtn').addEventListener('click', () => {
-                placeOrder();
-            });
-        } else {
-            cartHTML += '<button id="placeOrderBtn" disabled>Place order</button><p>Sign in to place order';
-        }
     }
 
     cartContainer.innerHTML = cartHeading + cartHTML;
@@ -316,8 +284,6 @@ function navigateTo(page, userId) {
         }
     }
 }
-
-
 
 startPage();
 
