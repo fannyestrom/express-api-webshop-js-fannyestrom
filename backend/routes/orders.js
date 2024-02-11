@@ -13,23 +13,23 @@ router.post('/add', async (req, res) => {
     try {
         const db = req.app.locals.db;
 
-        // Retrieve user from database
+        // retrieve user from database
         const userRecord = await db.collection('users').findOne({ _id: new ObjectId(user) });
 
-        // Check if user exists
+        // check if user exists
         if (!userRecord) {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        // Validate products
+        // validate products
         const validProductIds = await validateProducts(products, db);
 
-        // Error if products not valid
+        // error if products not valid
         if (validProductIds.length !== products.length) {
             return res.status(400).json({ error: 'One or more product IDs are invalid' });
         }
 
-        // Check stock availability for each product
+        // check stock availability for products
         for (const productId of validProductIds) {
             const product = await db.collection('products').findOne({ _id: new ObjectId(productId) });
             const quantityInOrder = products.find(prod => prod.productId === productId).quantity;
@@ -38,7 +38,7 @@ router.post('/add', async (req, res) => {
             }
         }
 
-        // Update stock for each product
+        // update stock for each product
         for (const productId of validProductIds) {
             const quantityInOrder = products.find(prod => prod.productId === productId).quantity;
             await db.collection('products').updateOne(
@@ -47,7 +47,7 @@ router.post('/add', async (req, res) => {
             );
         }
 
-        // Create order in the database
+        // create order in the database
         const order = {
             userId: user,
             products: validProductIds.map(productId => ({ productId, quantity: products.find(prod => prod.productId === productId).quantity })),

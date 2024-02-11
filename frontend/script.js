@@ -3,18 +3,18 @@ function startPage(userId) {
     const mainContent = document.getElementById('mainContent');
     mainContent.innerHTML = '<h1>Webshop Home Page</h1>';
 
-    if (userId) { // Check if user is logged in
+    if (userId) { // check if user is signed in
         const orderBtn = document.createElement('button');
         orderBtn.textContent = 'My order';
         orderBtn.onclick = () => navigateTo('order', userId); // Pass userId to navigateTo function
         mainContent.appendChild(orderBtn);
     }
 
-    // Check if the current page is the cart page
+    // check if the current page is the cart page
     if (window.location.pathname.endsWith('cart.html')) {
         displayCart();
     } else {
-        // Clear the cart container if not on the cart page
+        // clear the cart container if not on the cart page
         const cartContainer = document.getElementById('cartContainer');
         if (cartContainer) {
             cartContainer.innerHTML = '';
@@ -62,7 +62,7 @@ function loginPage() {
     
             if (data.user) {
                 localStorage.setItem("user", data.user);
-                printLogoutBtn(); // Call printLogoutBtn to display the logout button
+                printLogoutBtn(); // 
                 startPage(data.user);
             } else {
                 alert("Incorrect login");
@@ -92,7 +92,6 @@ function printLogoutBtn() {
 
         userForm.appendChild(logoutBtn);
     } else {
-        // If no user is signed in, clear the userForm content
         userForm.innerHTML = "";
     }
 }
@@ -131,7 +130,7 @@ function printProducts() {
             productContainer.appendChild(productDiv);
         });
 
-        // Add event listeners for plus and minus buttons
+        // event listeners for plus and minus buttons
         const increaseButtons = document.querySelectorAll('.increase');
         const decreaseButtons = document.querySelectorAll('.decrease');
 
@@ -176,17 +175,17 @@ function decreaseProductQuantity(index, productId) {
     }
 }
 
-// Initialize cart data object and load cart data from localStorage
+// cart data object and load cart data from localStorage
 let cartData = JSON.parse(localStorage.getItem('cartData')) || {};
 
-// Update shopping cart data and save to localStorage
+// update shopping cart data and save to localStorage
 function updateCart(productId, quantity) {
     cartData[productId] = quantity;
     localStorage.setItem('cartData', JSON.stringify(cartData));
     displayCart();
 }
 
-// Load cart data from localStorage
+// load cart data from localStorage
 function loadCartData() {
     const storedCartData = localStorage.getItem('cartData');
     if (storedCartData) {
@@ -219,24 +218,20 @@ async function displayCart() {
     if (cartIsEmpty) {
         cartHTML = "<p>Your cart is empty.</p>";
     } else {
-        // Check if a user is signed in
+        // check if a user is signed in
         const user = localStorage.getItem('user');
         if (user) {
-            // Add a button to place order
             cartHTML += '<button id="placeOrderBtn">Place Order</button>';
-            // Add event listener to the button
             document.getElementById('placeOrderBtn').addEventListener('click', () => {
                 placeOrder();
             });
         } else {
-            // If no user is signed in, disable the button
             cartHTML += '<button id="placeOrderBtn" disabled>Place order</button><p>Sign in to place order';
         }
     }
 
     cartContainer.innerHTML = cartHeading + cartHTML;
 }
-
 
 async function fetchProduct(productId) {
     const response = await fetch(`http://localhost:3000/api/products/${productId}`);
@@ -247,10 +242,6 @@ async function fetchProduct(productId) {
     return product;
 }
 
-
-
-
-// Call loadCartData when the page loads
 loadCartData();
 
 
@@ -317,7 +308,7 @@ function navigateTo(page, userId) {
             break;
     }
 
-    // Clear cart container if not on the cart page
+    // clear cart container if not on the cart page
     if (page !== 'cart') {
         const cartContainer = document.getElementById('cartContainer');
         if (cartContainer) {
