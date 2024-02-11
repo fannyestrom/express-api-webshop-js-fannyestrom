@@ -130,7 +130,7 @@ function printProducts() {
     });
 }
 
-// Update increaseProductQuantity function
+// increase product quantity
 function increaseProductQuantity(index, productId) {
     console.log("Increasing quantity for product ID:", productId); // Add debug log
     const quantityElement = document.querySelectorAll('.quantity')[index];
@@ -140,7 +140,7 @@ function increaseProductQuantity(index, productId) {
     updateCart(productId, quantity);
 }
 
-// Update decreaseProductQuantity function
+// decrease product quantity
 function decreaseProductQuantity(index, productId) {
     console.log("Decreasing quantity for product ID:", productId); // Add debug log
     const quantityElement = document.querySelectorAll('.quantity')[index];
@@ -171,7 +171,7 @@ function loadCartData() {
     }
 }
 
-// Update displayCart function
+// show shopping cart
 async function displayCart() {
     console.log("Displaying cart..."); // Add debug log
     const cartContainer = document.getElementById('cartContainer');
