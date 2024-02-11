@@ -60,21 +60,33 @@ router.post('/add', (req, res) => {
 
 });
 
-// POST /users/login (login user)
-router.post('/login', (req, res) => {
-
+router.post('/login', async (req, res) => {
   let checkEmail = req.body.email;
   let checkPassword = req.body.password;
 
-  let user = users.find(user => user.email == checkEmail && user.password == checkPassword);
+  try {
+    const user = await req.app.locals.db.collection('users').findOne({ email: checkEmail });
 
-  if (user) {
-    res.json({user: user.id});
-  } else {
-    res.status(401).json({message: "Incorrect login"})
+    console.log('User from database:', user);
+    console.log('Password to check:', checkPassword);
+
+    if (user) {
+      if (user.password === checkPassword) {
+        res.json({ user: user.id });
+      } else {
+        res.status(401).json({ message: "Incorrect password" });
+      }
+    } else {
+      res.status(401).json({ message: "User not found" });
+    }
+  } catch (error) {
+    console.error('Error fetching user from the database:', error);
+    res.status(500).json({ error: 'An error occurred while fetching user' });
   }
+});
 
-})
+
+
 
 
 module.exports = router;

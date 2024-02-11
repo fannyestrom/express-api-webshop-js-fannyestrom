@@ -11,36 +11,58 @@ router.post('/add', async (req, res) => {
     }
 
     try {
-        // retrieve user from data base
-        const userRecord = await req.app.locals.db.collection('users').findOne({ _id: new ObjectId(user) });
-        
-        // check if the user exists
+        const db = req.app.locals.db;
+
+        // Retrieve user from database
+        const userRecord = await db.collection('users').findOne({ _id: new ObjectId(user) });
+
+        // Check if user exists
         if (!userRecord) {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        // validate products
-        const validProductIds = await validateProducts(products, req.app.locals.db);
+        // Validate products
+        const validProductIds = await validateProducts(products, db);
 
-        // return error if products not valid
+        // Error if products not valid
         if (validProductIds.length !== products.length) {
             return res.status(400).json({ error: 'One or more product IDs are invalid' });
         }
 
-        // create order in the data base
+        // Check stock availability for each product
+        for (const productId of validProductIds) {
+            const product = await db.collection('products').findOne({ _id: new ObjectId(productId) });
+            const quantityInOrder = products.find(prod => prod.productId === productId).quantity;
+            if (!product || product.lager < quantityInOrder) {
+                return res.status(400).json({ error: `Insufficient stock for product ${productId}` });
+            }
+        }
+
+        // Update stock for each product
+        for (const productId of validProductIds) {
+            const quantityInOrder = products.find(prod => prod.productId === productId).quantity;
+            await db.collection('products').updateOne(
+                { _id: new ObjectId(productId) },
+                { $inc: { lager: -quantityInOrder } }
+            );
+        }
+
+        // Create order in the database
         const order = {
             userId: user,
-            products: validProductIds.map(productId => ({ productId, quantity: 1 })),
+            products: validProductIds.map(productId => ({ productId, quantity: products.find(prod => prod.productId === productId).quantity })),
             createdAt: new Date()
         };
 
-        const result = await req.app.locals.db.collection('orders').insertOne(order);
+        const result = await db.collection('orders').insertOne(order);
         res.json({ message: 'Order created successfully', orderId: result.insertedId });
     } catch (error) {
         console.error('Error creating order:', error);
         res.status(500).json({ error: 'An error occurred while creating order' });
     }
 });
+
+
 
 // validate products
 async function validateProducts(products, db) {

@@ -30,7 +30,7 @@ router.get('/:id', (req, res) => {
         return res.status(400).json({ message: "Invalid product ID" });
     }
 
-    req.app.locals.db.collection('products').findOne({ _id: ObjectId })
+    req.app.locals.db.collection('products').findOne({ _id: objectId })
         .then(product => {
             if (!product) {
                 return res.status(404).json({ message: "Product not found" });
